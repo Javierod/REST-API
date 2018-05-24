@@ -8,23 +8,42 @@
     android:background="#ffca64"
     android:padding="10dp">
 
-    <Button
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="DISPLAY"
-        android:textSize="20sp"
-        android:textColor="@android:color/white"
-        android:textAllCaps="true"
-        android:id="@+id/ParseButton"
-        android:background="#F17022" />
+        android:id="@+id/topLinearLayout"
+        android:orientation="horizontal"
+        android:weightSum="10">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DISPLAY"
+            android:textSize="20sp"
+            android:textColor="@android:color/white"
+            android:textAllCaps="true"
+            android:id="@+id/ParseButton"
+            android:background="#F17022"
+            android:layout_weight="1"/>
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="9"
+            android:id="@+id/Spinner"
+            android:layout_marginLeft="5dp"
+            android:popupBackground="#ffca64">
+        </Spinner>
+    </LinearLayout>
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/ParseButton"
-        android:id="@+id/CustomList"
+        android:layout_below="@+id/topLinearLayout"
         android:background="#ffca64"
-        android:paddingTop="3dp">
+        android:paddingTop="3dp"
+        android:id="@+id/CustomList">
     </ListView>
+
 
 </RelativeLayout>
