@@ -78,6 +78,19 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    ////////////////////////////////////////////
+    //FUNCTION NAME: parseJson                //
+    //FUNCTION PURPOSE: Parse JSON file.      //
+    //                                        //
+    //PARAMETERS: None.                       //
+    //RETURNS: Void.                          //
+    ////////////////////////////////////////////
+    //CREATED BY: Javier Rodriguez.           //
+    //DATE:05/23/2018                         //
+    ////////////////////////////////////////////
+    //LAST MODIFICATION: 05/24/2018           //
+    //MADE BY: Javier Rodriguez.              //
+    ////////////////////////////////////////////
     public void parseJson(){
         String URL = "https://api.citytelecoin.com/3186291/getInmates"; //REST API address.
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null,
@@ -104,6 +117,19 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(jsonArrayRequest);
     }
 
+    ////////////////////////////////////////////
+    //FUNCTION NAME: unsorted                 //
+    //FUNCTION PURPOSE: Display default list. //
+    //                                        //
+    //PARAMETERS: None.                       //
+    //RETURNS: Void.                          //
+    ////////////////////////////////////////////
+    //CREATED BY: Javier Rodriguez.           //
+    //DATE:05/24/2018                         //
+    ////////////////////////////////////////////
+    //LAST MODIFICATION:                      //
+    //MADE BY:                                //
+    ////////////////////////////////////////////
     public void unsorted(){
         inmateList.clear();                                         //Cleaning list.
         for (int i = 0; i < inmate.length; i++)                     //Adding items to list.
@@ -111,12 +137,23 @@ public class MainActivity extends AppCompatActivity {
         InmateLA.notifyDataSetChanged();                            //Notifying change.
     }
 
+    ////////////////////////////////////////////
+    //FUNCTION NAME: sortById                 //
+    //FUNCTION PURPOSE: Display list sorted by//
+    //                  id.                   //
+    //                                        //
+    //PARAMETERS: None.                       //
+    //RETURNS: Void.                          //
+    ////////////////////////////////////////////
+    //CREATED BY: Javier Rodriguez.           //
+    //DATE:05/24/2018                         //
+    ////////////////////////////////////////////
+    //LAST MODIFICATION:                      //
+    //MADE BY:                                //
+    ////////////////////////////////////////////
     public void sortById(){
         int [] order = new int[inmate.length];                  //Array to handle IDs.
         int [] indexOrder = new int[inmate.length];             //Array to handle IDs position.
-        boolean swap;                                           //Flag.
-        int temp;                                               //Integer variable for temporary value.
-        int indexTemp;                                          //Integer variable for temporary index.
 
         //Getting inmates IDs.
         for(int i=0; i < inmate.length; i++)
@@ -130,6 +167,98 @@ public class MainActivity extends AppCompatActivity {
             indexOrder[i] = i;
 
         //Bubble sort.
+        bubbleSort(indexOrder, order);
+
+
+        inmateList.clear();                             //Clearing list.
+        for (int i = 0; i < indexOrder.length; i++)     //Adding items to list.
+            inmateList.add(inmate[indexOrder[i]]);
+        InmateLA.notifyDataSetChanged();                //Notifying change.
+    }
+
+    ////////////////////////////////////////////
+    //FUNCTION NAME: sortByabc                //
+    //FUNCTION PURPOSE: Display list sorted   //
+    //                  alphabetically.       //
+    //                                        //
+    //PARAMETERS: None.                       //
+    //RETURNS: Void.                          //
+    ////////////////////////////////////////////
+    //CREATED BY: Javier Rodriguez.           //
+    //DATE:05/24/2018                         //
+    ////////////////////////////////////////////
+    //LAST MODIFICATION:05/25/2018            //
+    //MADE BY: Javier Rodriguez.              //
+    ////////////////////////////////////////////
+    public void sortByABC(){
+        int compare = "CARL".compareTo("JOSE");
+
+        inmateList.clear();
+        if(compare>1){
+            Log.i("LOG", "CARL");
+        } else
+            Log.i("LOG", "JOSE");
+        InmateLA.notifyDataSetChanged();
+    }
+
+    ////////////////////////////////////////////
+    //FUNCTION NAME: sortByUID                //
+    //FUNCTION PURPOSE: Display list sorted by//
+    //                  uid.                  //
+    //                                        //
+    //PARAMETERS: None.                       //
+    //RETURNS: Void.                          //
+    ////////////////////////////////////////////
+    //CREATED BY: Javier Rodriguez.           //
+    //DATE:05/24/2018                         //
+    ////////////////////////////////////////////
+    //LAST MODIFICATION:05/25/2018            //
+    //MADE BY: Javier Rodriguez.              //
+    ////////////////////////////////////////////
+    public void sortByUID(){
+        int [] order = new int[inmate.length];                  //Array to handle UIDs.
+        int [] indexOrder = new int[inmate.length];             //Array to handle UIDs position.
+
+        //Getting inmates UIDs.
+        for(int i=0; i < inmate.length; i++)
+            try{ order[i] = Integer.parseInt(inmate[i].getInmateUid());      //Initializing.
+            } catch(NumberFormatException e){
+                Toast.makeText(getApplicationContext(), "COULD NOT CONVERT UIDs", Toast.LENGTH_SHORT).show();
+            }
+
+        //Initializing.
+        for(int i=0; i< inmate.length; i++)
+            indexOrder[i] = i;
+
+        //Bubble sort.
+        bubbleSort(indexOrder, order);
+
+
+        inmateList.clear();                             //Clearing list.
+        for (int i = 0; i < indexOrder.length; i++)     //Adding items to list.
+            inmateList.add(inmate[indexOrder[i]]);
+        InmateLA.notifyDataSetChanged();                //Notifying change.
+    }
+
+    ////////////////////////////////////////////
+    //FUNCTION NAME: bubbleSort               //
+    //FUNCTION PURPOSE: Sort list.            //
+    //                                        //
+    //PARAMETERS: 1 - Integer Array.          //
+    //            2 - Integer Array.          //
+    //RETURNS: Void.                          //
+    ////////////////////////////////////////////
+    //CREATED BY: Javier Rodriguez.           //
+    //DATE:05/25/2018                         //
+    ////////////////////////////////////////////
+    //LAST MODIFICATION:                      //
+    //MADE BY:                                //
+    ////////////////////////////////////////////
+    private void bubbleSort(int [] indexOrder, int [] order){
+        boolean swap;                                           //Flag.
+        int temp;                                               //Integer variable for temporary value.
+        int indexTemp;                                          //Integer variable for temporary index.
+
         do{
             swap = false;
             for(int count = 0; count < (order.length - 1); count++){
@@ -144,20 +273,5 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         } while(swap);
-
-        inmateList.clear();                             //Clearing list.
-        for (int i = 0; i < indexOrder.length; i++)     //Adding items to list.
-            inmateList.add(inmate[indexOrder[i]]);
-        InmateLA.notifyDataSetChanged();                //Notifying change,.
-    }
-
-    public void sortByABC(){
-        inmateList.clear();
-        InmateLA.notifyDataSetChanged();
-    }
-
-    public void sortByUID(){
-        inmateList.clear();
-        InmateLA.notifyDataSetChanged();
     }
 }
