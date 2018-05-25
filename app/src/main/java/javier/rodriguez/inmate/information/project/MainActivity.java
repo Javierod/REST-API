@@ -191,14 +191,27 @@ public class MainActivity extends AppCompatActivity {
     //MADE BY: Javier Rodriguez.              //
     ////////////////////////////////////////////
     public void sortByABC(){
-        int compare = "CARL".compareTo("JOSE");
+        String [] order = new String[inmate.length];            //Array to handle names.
+        int [] indexOrder = new int[inmate.length];             //Array to handle names position.
 
-        inmateList.clear();
-        if(compare>1){
-            Log.i("LOG", "CARL");
-        } else
-            Log.i("LOG", "JOSE");
-        InmateLA.notifyDataSetChanged();
+        //Getting inmate names.
+        for(int i=0; i < inmate.length; i++)
+            try{ order[i] = inmate[i].getInmateFirstName().toLowerCase();     //Initializing.
+            } catch(NumberFormatException e){
+                Toast.makeText(getApplicationContext(), "COULD NOT CONVERT UIDs", Toast.LENGTH_SHORT).show();
+            }
+
+        //Initializing.
+        for(int i=0; i< inmate.length; i++)
+            indexOrder[i] = i;
+
+        //Bubble Sort
+        bubbleSort(indexOrder, order);
+
+        inmateList.clear();                             //Clearing list.
+        for (int i = 0; i < indexOrder.length; i++)     //Adding items to list.
+            inmateList.add(inmate[indexOrder[i]]);
+        InmateLA.notifyDataSetChanged();                //Notifying change.
     }
 
     ////////////////////////////////////////////
@@ -249,7 +262,7 @@ public class MainActivity extends AppCompatActivity {
     //RETURNS: Void.                          //
     ////////////////////////////////////////////
     //CREATED BY: Javier Rodriguez.           //
-    //DATE:05/25/2018                         //
+    //DATE:05/24/2018                         //
     ////////////////////////////////////////////
     //LAST MODIFICATION:                      //
     //MADE BY:                                //
@@ -263,6 +276,43 @@ public class MainActivity extends AppCompatActivity {
             swap = false;
             for(int count = 0; count < (order.length - 1); count++){
                 if(order[count] > order[count + 1]){
+                    temp = order[count];
+                    indexTemp = indexOrder[count];
+                    indexOrder[count] = indexOrder[count+1];
+                    indexOrder[count+1] = indexTemp;
+                    order[count] = order[count+1];
+                    order[count+1] = temp;
+                    swap = true;
+                }
+            }
+        } while(swap);
+    }
+
+    ////////////////////////////////////////////
+    //FUNCTION NAME: bubbleSort               //
+    //FUNCTION PURPOSE: Sort list.            //
+    //                                        //
+    //PARAMETERS: 1 - Integer Array.          //
+    //            2 - Integer Array.          //
+    //RETURNS: Void.                          //
+    ////////////////////////////////////////////
+    //CREATED BY: Javier Rodriguez.           //
+    //DATE:05/25/2018                         //
+    ////////////////////////////////////////////
+    //LAST MODIFICATION:                      //
+    //MADE BY:                                //
+    ////////////////////////////////////////////
+    private void bubbleSort(int [] indexOrder, String [] order){
+        boolean swap;                                           //Flag.
+        String temp;                                            //Integer variable for temporary value.
+        int indexTemp;                                          //Integer variable for temporary index.
+        int compare;                                            //Integer to hold string comparison.
+
+        do{
+            swap = false;
+            for(int count = 0; count < (order.length - 1); count++){
+                compare = order[count].compareToIgnoreCase(order[count+1]);
+                if(compare > 0){
                     temp = order[count];
                     indexTemp = indexOrder[count];
                     indexOrder[count] = indexOrder[count+1];
